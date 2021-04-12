@@ -112,7 +112,7 @@ class api_client{
             
             setInterval(() => {
                 this.HDL_game();
-            }, 1000);
+            }, 5000);
         }
     }
     dateShift(date, secs){
