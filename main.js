@@ -8,16 +8,40 @@ var api_game = require('./api_game_client/api_game_client.js');
 
 let str_error = '';
 let result = '';
-
+let game = '';
 //接收事件function
 function handler_callback(game_data){
     // console.log('收到房間資訊:');
-    // console.log(game_data);
-    result['event_title'] = '收到房間資訊:';
-    ws.send(JSON.stringify(result));
+    // game_data['event_title'] = '收到房間資訊:';
+    console.log(game_data);
+    ws.send(JSON.stringify(game_data));
+    
 };
 
+ws.onopen = function () {
+   
+}
+ws.onmessage = function(event) {
+    var msgObj = JSON.parse(event['data']);
+    if(msgObj['event']=='roomRound'){
+        setInterval(()=>{
+            result = api_client.getGameResult(msgObj['key']);
+            result['event'] = 'gameResult';
+            ws.send(JSON.stringify(result));
+        }, 3000);
+    }
+};
 
+// 
+// ws.onmessage = function(event) {
+//     var res = JSON.parse(event.data);
+//     if(res.event == 'roomStatus'){
+//         setInterval(() => {
+//             ws.send(JSON.stringify(game));
+//         }, 300);
+//     }
+// };    
+  
 
 //建立物件
 var api_client = new api_game.api_client('wsapi.abc.com', 'test_token_cc123');
@@ -53,7 +77,7 @@ if(result !== false){
     // console.log('checkUser 檢查帳號是否存在');
     // console.log(result);
     result['event_title'] = 'checkUser 檢查帳號是否存在';
-    ws.send(JSON.stringify(result));
+    // ws.send(JSON.stringify(result));
 }else{
     str_error = api_client.get_error();
 }
@@ -68,7 +92,7 @@ if(result !== false){
     // console.log('loginUser 帳號登入');
     // console.log(result);
     result['event_title'] = 'loginUser 帳號登入';
-    ws.send(JSON.stringify(result));
+    // ws.send(JSON.stringify(result));
 }else{
     str_error = api_client.get_error();
 }
@@ -87,7 +111,7 @@ if(result !== false){
     // console.log('createUser 新建帳號');
     // console.log(result);
     result['event_title'] = 'createUser 新建帳號';
-    ws.send(JSON.stringify(result));
+    // ws.send(JSON.stringify(result));
 
 }else{
     str_error = api_client.get_error();
@@ -109,7 +133,7 @@ if(result !== false){
     // console.log(result);
     result['event_title'] = 'editUser 修改帳號';
 
-    ws.send(JSON.stringify(result));
+    // ws.send(JSON.stringify(result));
 
 }else{
     str_error = api_client.get_error();
@@ -132,7 +156,7 @@ if(result !== false){
     // console.log(result);
     result['event_title'] = 'UserPointChange 修改點數';
 
-    ws.send(JSON.stringify(result));
+    // ws.send(JSON.stringify(result));
 
 }else{
     str_error = api_client.get_error();
@@ -152,7 +176,7 @@ if(result !== false){
     // console.log(result);
     result['event_title'] = 'UserPointChange 修改點數';
 
-    ws.send(JSON.stringify(result));
+    // ws.send(JSON.stringify(result));
 
 }else{
     str_error = api_client.get_error();
@@ -167,7 +191,7 @@ if(result !== false){
     // console.log(result);
     result['event_title'] = 'getUsetPointLog 查帳號點數紀錄';
 
-    ws.send(JSON.stringify(result));
+    // ws.send(JSON.stringify(result));
 
 }else{
     str_error = api_client.get_error();
@@ -191,7 +215,7 @@ setInterval(()=>{
         // console.log(result);
         result['event_title'] = 'getGameResult 取得房間歷史結果';
 
-        ws.send(JSON.stringify(result));
+        // ws.send(JSON.stringify(result));
 
     }else{
         str_error = api_client.get_error();
@@ -215,7 +239,7 @@ setTimeout(()=>{
         // console.log(result);
         result['event_title'] = 'userAddBet 房間下注';
 
-        ws.send(JSON.stringify(result));
+        // ws.send(JSON.stringify(result));
 
     }else{
         str_error = api_client.get_error();
@@ -235,7 +259,7 @@ setTimeout(()=>{
         // console.log(result);
         result['event_title'] = 'userAddBet 房間下注';
 
-        ws.send(JSON.stringify(result));
+        // ws.send(JSON.stringify(result));
 
     }else{
         str_error = api_client.get_error();
@@ -252,7 +276,7 @@ setTimeout(()=>{
         // console.log(result);
         result['event_title'] = 'userAddBet 房間下注';
 
-        ws.send(JSON.stringify(result));
+        // ws.send(JSON.stringify(result));
 
     }else{
         str_error = api_client.get_error();
@@ -268,7 +292,7 @@ setTimeout(()=>{
         // console.log(result);
         result['event_title'] = 'getUserBet 會員歷史注單';
 
-        ws.send(JSON.stringify(result));
+        // ws.send(JSON.stringify(result));
 
     }else{
         str_error = api_client.get_error();
@@ -286,7 +310,7 @@ if(result !== false){
     // console.log(result);
     result['event_title'] = 'getBetSetting 系統限注資訊';
 
-    ws.send(JSON.stringify(result));
+    // ws.send(JSON.stringify(result));
 
 }else{
     str_error = api_client.get_error();
@@ -303,7 +327,7 @@ if(result !== false){
     // console.log(result);
     result['event_title'] = 'getResultImageURL 取得遊戲結果截圖';
 
-    ws.send(JSON.stringify(result));
+    // ws.send(JSON.stringify(result));
 
 }else{
     str_error = api_client.get_error();
@@ -318,7 +342,7 @@ if(result !== false){
 
     result['event_title'] = 'EROOM_SA01_R01 取得直播連結，含授權';
 
-    ws.send(JSON.stringify(result));
+    // ws.send(JSON.stringify(result));
 
 }else{
     str_error = api_client.get_error();
